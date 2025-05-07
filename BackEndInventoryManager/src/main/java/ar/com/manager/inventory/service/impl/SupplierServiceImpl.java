@@ -57,7 +57,7 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     public void deleteSupplier(Integer id) {
         Supplier supplier = supplierRepository.findById(id).orElse(null);
-        if(supplier == null){
+        if(supplier == null ){
             throw new NotFoundException("The supplier with id " + id + " does not exist.");
         }
         supplier.setDeleted(true);
@@ -67,7 +67,7 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     public SupplierDto getSupplierById(Integer id) {
         Supplier supplier = supplierRepository.findById(id).orElse(null);
-        if(supplier == null){
+        if(supplier == null || supplier.getDeleted()){
             throw new NotFoundException("The supplier with id " + id + " does not exist.");
         }
         return supplierMapper.toDto(supplier);

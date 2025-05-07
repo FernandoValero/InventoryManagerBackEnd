@@ -1,5 +1,7 @@
 package ar.com.manager.inventory.dto;
 
+import java.util.List;
+
 public class UserDto {
     private static final long serialVersionUID = 1L;
     private Integer id;
@@ -12,11 +14,12 @@ public class UserDto {
     private String email;
     private String type;
     private boolean enabled;
+    private List<SaleDto> sales;
 
     public UserDto() {
     }
 
-    public UserDto(Integer id, boolean enabled, String type, String email, String phoneNumber, String userName, String password, String lastName, String firstName) {
+    public UserDto(Integer id, boolean enabled, String type, String email, String phoneNumber, String userName, String password, String lastName, String firstName, List<SaleDto> sales) {
         this.id = id;
         this.enabled = enabled;
         this.type = type;
@@ -26,6 +29,7 @@ public class UserDto {
         this.password = password;
         this.lastName = lastName;
         this.firstName = firstName;
+        this.sales = sales;
     }
 
     public Integer getId() {
@@ -98,5 +102,17 @@ public class UserDto {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public List<SaleDto> getSales() {
+        return sales;
+    }
+
+    public void setSales(List<SaleDto> sales) {
+        this.sales = sales;
+    }
+
+    public void addSale(SaleDto sale) {
+        this.sales.add(sale);
     }
 }

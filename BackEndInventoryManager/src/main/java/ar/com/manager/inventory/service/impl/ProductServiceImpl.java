@@ -39,9 +39,6 @@ public class ProductServiceImpl implements ProductService {
         if (productDto.getUserId() == null) {
             throw new ValidationException("The user id is required.");
         }
-        if (productDto.getSupplierId() == null) {
-            throw new ValidationException("The supplier id is required.");
-        }
         if (productDto.getPrice() <= 0) {
             throw new IllegalArgumentException("The price must be greater than 0.");
         }
@@ -84,7 +81,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDto getProductById(Integer id) {
         Product product = productRepository.findById(id).orElse(null);
-        if (product == null) {
+        if (product == null || product.getDeleted()) {
             throw new NotFoundException("The product with id " + id + " does not exist.");
         }
         return productMapper.toDto(product);

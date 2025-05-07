@@ -27,7 +27,7 @@ public class Supplier   {
     private String company;
 
     @Column(name = "deleted")
-    private Boolean deleted;
+    private boolean deleted;
 
     @OneToMany(mappedBy = "supplier")
     private List<Product> products;
@@ -35,7 +35,7 @@ public class Supplier   {
     public Supplier() {
     }
 
-    public Supplier(Integer id, String firstName, String lastName, String phoneNumber, String email, String company, Boolean deleted, List<Product> products) {
+    public Supplier(Integer id, String firstName, String lastName, String phoneNumber, String email, String company, boolean deleted, List<Product> products) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -94,11 +94,11 @@ public class Supplier   {
         this.company = company;
     }
 
-    public Boolean getDeleted() {
+    public boolean getDeleted() {
         return deleted;
     }
 
-    public void setDeleted(Boolean deleted) {
+    public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
 
@@ -108,5 +108,9 @@ public class Supplier   {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    public void addProduct(Product product) {
+        this.products.add(product);
     }
 }

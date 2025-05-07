@@ -36,7 +36,7 @@ public class User {
     private boolean enabled;
 
     @Column(name = "deleted")
-    private Boolean deleted;
+    private boolean deleted;
 
     @OneToMany(mappedBy = "user")
     private List<Sale> sales;
@@ -47,7 +47,7 @@ public class User {
     public User() {
     }
 
-    public User(Integer id, String firstName, String lastName, String userName, String password, String email, String phoneNumber, String type, boolean enabled, Boolean deleted, List<Sale> sales, List<Product> products) {
+    public User(Integer id, String firstName, String lastName, String userName, String password, String email, String phoneNumber, String type, boolean enabled, boolean deleted, List<Sale> sales, List<Product> products) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -134,11 +134,11 @@ public class User {
         this.enabled = enabled;
     }
 
-    public Boolean getDeleted() {
+    public boolean getDeleted() {
         return deleted;
     }
 
-    public void setDeleted(Boolean deleted) {
+    public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
 
@@ -150,11 +150,19 @@ public class User {
         this.sales = sales;
     }
 
+    public void addSale(Sale sale) {
+        this.sales.add(sale);
+    }
+
     public List<Product> getProducts() {
         return products;
     }
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    public void addProduct(Product product) {
+        this.products.add(product);
     }
 }

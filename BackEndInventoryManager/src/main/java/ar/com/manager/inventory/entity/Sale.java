@@ -19,23 +19,24 @@ public class Sale {
     private Double totalPrice;
 
     @Column(name = "deleted")
-    private Boolean deleted;
+    private boolean deleted;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(optional = true)
     @JoinColumn(name = "client_id")
     private Client client;
 
-    @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "sale_id")
     private List<SaleDetail> saleDetails;
 
     public Sale() {
     }
 
-    public Sale(Integer id, LocalDateTime saleDate, Double totalPrice, Boolean deleted, User user, Client client, List<SaleDetail> saleDetails) {
+    public Sale(Integer id, LocalDateTime saleDate, Double totalPrice, boolean deleted, User user, Client client, List<SaleDetail> saleDetails) {
         this.id = id;
         this.saleDate = saleDate;
         this.totalPrice = totalPrice;
@@ -69,11 +70,11 @@ public class Sale {
         this.totalPrice = totalPrice;
     }
 
-    public Boolean getDeleted() {
+    public boolean getDeleted() {
         return deleted;
     }
 
-    public void setDeleted(Boolean deleted) {
+    public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
 

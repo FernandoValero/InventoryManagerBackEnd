@@ -22,15 +22,15 @@ public class Client {
     private String dni;
 
     @Column(name = "deleted")
-    private Boolean deleted;
+    private boolean deleted;
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Sale> sales;
 
     public Client() {
     }
 
-    public Client(Integer id, String firstName, String lastName, String dni, Boolean deleted, List<Sale> sales) {
+    public Client(Integer id, String firstName, String lastName, String dni, boolean deleted, List<Sale> sales) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -71,11 +71,11 @@ public class Client {
         this.dni = dni;
     }
 
-    public Boolean getDeleted() {
+    public boolean getDeleted() {
         return deleted;
     }
 
-    public void setDeleted(Boolean deleted) {
+    public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
 
@@ -85,5 +85,9 @@ public class Client {
 
     public void setSales(List<Sale> sales) {
         this.sales = sales;
+    }
+
+    public void addSale(Sale sale) {
+        this.sales.add(sale);
     }
 }

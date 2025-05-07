@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserById(Integer id) throws NotFoundException {
         User user = userRepository.findById(id).orElse(null);
-        if(user == null){
+        if(user == null|| user.getDeleted()){
             throw new NotFoundException("The user with id " + id + " does not exist.");
         }
         return userMapper.toDto(user);
@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
         finalUser.setFirstName(modifiedUser.getFirstName());
         finalUser.setLastName(modifiedUser.getLastName());
         finalUser.setUserName(modifiedUser.getUserName());
-        finalUser.setPhoneNumber(finalUser.getPhoneNumber());
+        finalUser.setPhoneNumber(modifiedUser.getPhoneNumber());
         finalUser.setEmail(modifiedUser.getEmail());
         finalUser.setType(finalUser.getType());
         finalUser.setEnabled(modifiedUser.isEnabled());
