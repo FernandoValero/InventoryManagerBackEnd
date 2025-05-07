@@ -29,7 +29,9 @@ public class ProductMapper {
         productDto.setCategory(product.getCategory());
         productDto.setImage(product.getImage());
         productDto.setUserId(product.getUser().getId());
-        productDto.setSupplierId(product.getSupplier().getId());
+        if(product.getSupplier() != null){
+            productDto.setSupplierId(product.getSupplier().getId());
+        }
         return productDto;
     }
     public Product toEntity(ProductDto productDto) throws NotFoundException {
@@ -48,7 +50,7 @@ public class ProductMapper {
         }
         if(productDto.getSupplierId() != null) {
             product.setSupplier(supplierRepository.findById(productDto.getSupplierId())
-                                                  .orElseThrow(() -> new NotFoundException("Supplier not found")));
+                                            .orElse(null));
         }
         return product;
     }

@@ -57,12 +57,11 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, Object>> deleteUser(@PathVariable Integer id) {
-        Map<String, Object> response = new HashMap<>();
         try {
             userService.deleteUser(id);
-            response.put(MESSAGE,USER_DELETED_SUCCESS);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (NotFoundException e) {
+            Map<String, Object> response = new HashMap<>();
             response.put(MESSAGE, USER_DELETED_ERROR);
             response.put(ERROR, e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);

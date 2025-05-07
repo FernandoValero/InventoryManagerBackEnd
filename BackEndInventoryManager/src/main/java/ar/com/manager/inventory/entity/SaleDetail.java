@@ -13,11 +13,7 @@ public class SaleDetail {
     private Integer amount;
 
     @Column(name = "deleted")
-    private Boolean deleted;
-
-    @ManyToOne
-    @JoinColumn(name = "sale_id")
-    private Sale sale;
+    private boolean deleted;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
@@ -26,11 +22,10 @@ public class SaleDetail {
     public SaleDetail() {
     }
 
-    public SaleDetail(Integer id, Integer amount, Boolean deleted, Sale sale, Product product) {
+    public SaleDetail(Integer id, Integer amount, boolean deleted, Product product) {
         this.id = id;
         this.amount = amount;
         this.deleted = deleted;
-        this.sale = sale;
         this.product = product;
     }
 
@@ -50,20 +45,12 @@ public class SaleDetail {
         this.amount = amount;
     }
 
-    public Boolean getDeleted() {
+    public boolean getDeleted() {
         return deleted;
     }
 
-    public void setDeleted(Boolean deleted) {
+    public void setDeleted(boolean deleted) {
         this.deleted = deleted;
-    }
-
-    public Sale getSale() {
-        return sale;
-    }
-
-    public void setSale(Sale sale) {
-        this.sale = sale;
     }
 
     public Product getProduct() {

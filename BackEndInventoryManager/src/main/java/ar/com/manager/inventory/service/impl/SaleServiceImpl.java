@@ -9,6 +9,7 @@ import ar.com.manager.inventory.exception.ValidationException;
 import ar.com.manager.inventory.mapper.SaleDetailMapper;
 import ar.com.manager.inventory.mapper.SaleMapper;
 import ar.com.manager.inventory.repository.ProductRepository;
+import ar.com.manager.inventory.repository.SaleDetailRepository;
 import ar.com.manager.inventory.repository.SaleRepository;
 import ar.com.manager.inventory.service.SaleService;
 import org.springframework.stereotype.Service;
@@ -23,12 +24,14 @@ public class SaleServiceImpl implements SaleService {
     private final SaleDetailMapper saleDetailMapper;
     private final SaleRepository saleRepository;
     private final ProductRepository productRepository;
+    private final SaleDetailRepository saleDetailRepository;
     private final SaleMapper saleMapper;
 
-    public SaleServiceImpl(SaleDetailMapper saleDetailMapper, SaleRepository saleRepository, ProductRepository productRepository, SaleMapper saleMapper) {
+    public SaleServiceImpl(SaleDetailMapper saleDetailMapper, SaleRepository saleRepository, ProductRepository productRepository,SaleDetailRepository saleDetailRepository , SaleMapper saleMapper) {
         this.saleDetailMapper = saleDetailMapper;
         this.saleRepository = saleRepository;
         this.productRepository = productRepository;
+        this.saleDetailRepository = saleDetailRepository;
         this.saleMapper = saleMapper;
     }
 
@@ -37,6 +40,10 @@ public class SaleServiceImpl implements SaleService {
         if (saleDto == null || saleDto.getSaleDetail() == null || saleDto.getSaleDetail().isEmpty()) {
             throw new ValidationException("The sale or its details cannot be null or empty");
         }
+        if(saleDto.getUserId() == null){
+            throw new ValidationException("The user id is required.");
+        }
+        System.out.println("Muestra el Println");
         saleDto.getSaleDetail().forEach(saleDetailDto -> {
             if (saleDetailDto.getAmount() <= 0) {
                 throw new ValidationException("The amount in sale details must be greater than 0");
@@ -46,19 +53,20 @@ public class SaleServiceImpl implements SaleService {
             }
         });
         Sale sale = saleMapper.toEntity(saleDto);
+        System.out.println("Se convirtio la entidad de DTO a Entity");
         sale.setDeleted(false);
 
         List<SaleDetail> saleDetails = new ArrayList<>();
         for (SaleDetailDto saleDetailDto : saleDto.getSaleDetail()) {
             SaleDetail saleDetail = saleDetailMapper.toEntity(saleDetailDto);
-            saleDetail.setSale(sale);
+            saleDetail.setDeleted(false);
             saleDetails.add(saleDetail);
         }
         sale.setSaleDetails(saleDetails);
         LocalDateTime now = LocalDateTime.now();
+        sale.setTotalPrice(calculateTotal(saleDetails));
         sale.setSaleDate(now);
 
-        sale.setSaleDetails(saleDetails);
         sale = saleRepository.save(sale);
         return saleMapper.toDto(sale);
     }
@@ -82,7 +90,7 @@ public class SaleServiceImpl implements SaleService {
     @Override
     public SaleDto getSaleById(Integer id) throws NotFoundException {
         Sale sale = saleRepository.findById(id).orElse(null);
-        if (sale == null) {
+        if (sale == null || sale.getDeleted()) {
             throw new NotFoundException("The sale with id " + id + " does not exist.");
         }
         return saleMapper.toDto(sale);
@@ -94,5 +102,13 @@ public class SaleServiceImpl implements SaleService {
                 .stream()
                 .map(saleMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    private Double calculateTotal(List<SaleDetail>  saleDetails){
+        Double total = 0.0;
+        for (SaleDetail detail : saleDetails) {
+            total += detail.getAmount() * detail.getProduct().getPrice();
+        }
+        return total;
     }
 }

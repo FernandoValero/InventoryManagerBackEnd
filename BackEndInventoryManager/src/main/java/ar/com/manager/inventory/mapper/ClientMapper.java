@@ -21,8 +21,10 @@ public class ClientMapper {
         clientDto.setFirstName(client.getFirstName());
         clientDto.setLastName(client.getLastName());
         clientDto.setDni( client.getDni());
-        for (Sale sale : client.getSales()) {
-            clientDto.addSale(saleMapper.toDto(sale));
+        if(client.getSales() != null ) {
+            for (Sale sale : client.getSales()) {
+                clientDto.addSale(saleMapper.toDto(sale));
+            }
         }
         return clientDto;
     }

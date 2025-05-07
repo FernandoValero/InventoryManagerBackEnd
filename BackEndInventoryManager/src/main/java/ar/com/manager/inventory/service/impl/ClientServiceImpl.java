@@ -2,6 +2,7 @@ package ar.com.manager.inventory.service.impl;
 
 import ar.com.manager.inventory.dto.ClientDto;
 import ar.com.manager.inventory.entity.Client;
+import ar.com.manager.inventory.entity.Sale;
 import ar.com.manager.inventory.exception.NotFoundException;
 import ar.com.manager.inventory.exception.ValidationException;
 import ar.com.manager.inventory.mapper.ClientMapper;
@@ -21,12 +22,10 @@ public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
     private final ClientMapper clientMapper;
-    private final ProductMapper productMapper;
 
-    public ClientServiceImpl(ClientRepository clientRepository, ClientMapper clientMapper, ProductMapper productMapper) {
+    public ClientServiceImpl(ClientRepository clientRepository, ClientMapper clientMapper) {
         this.clientRepository = clientRepository;
         this.clientMapper = clientMapper;
-        this.productMapper = productMapper;
     }
 
     @Override
@@ -36,6 +35,8 @@ public class ClientServiceImpl implements ClientService {
         }
         Client client = clientMapper.toEntity(clientDto);
         client.setDeleted(false);
+        List<Sale> sales = new ArrayList<>();
+        client.setSales(sales);
         Client savedClient = clientRepository.save(client);
         return clientMapper.toDto(savedClient);
     }
@@ -70,7 +71,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ClientDto getClientById(Integer id) throws NotFoundException {
         Client client = clientRepository.findById(id).orElse(null);
-        if(client == null){
+        if(client == null || client.getDeleted()){
             throw new NotFoundException("The client does not exist");
         }
         return clientMapper.toDto(client);

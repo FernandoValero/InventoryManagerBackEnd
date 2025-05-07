@@ -35,7 +35,7 @@ public class Product {
     private String image;
 
     @Column(name = "deleted")
-    private Boolean deleted;
+    private boolean deleted;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -48,7 +48,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(Integer id, String number, String name, Integer stock, String barCode, Double price, String description, String category, String image, Boolean deleted, User user, Supplier supplier) {
+    public Product(Integer id, String number, String name, Integer stock, String barCode, Double price, String description, String category, String image, boolean deleted, User user, Supplier supplier) {
         this.id = id;
         this.number = number;
         this.name = name;
@@ -135,11 +135,11 @@ public class Product {
         this.image = image;
     }
 
-    public Boolean getDeleted() {
+    public boolean getDeleted() {
         return deleted;
     }
 
-    public void setDeleted(Boolean deleted) {
+    public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
 

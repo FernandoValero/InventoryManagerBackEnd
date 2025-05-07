@@ -21,8 +21,10 @@ public class SupplierMapper {
         supplierDto.setPhoneNumber(supplier.getPhoneNumber());
         supplierDto.setEmail(supplier.getEmail());
         supplierDto.setCompany(supplier.getCompany());
-        for (Product product : supplier.getProducts()) {
-            supplierDto.addProduct(productMapper.toDto(product));
+        if(supplier.getProducts() != null ) {
+            for (Product product : supplier.getProducts()) {
+                supplierDto.addProduct(productMapper.toDto(product));
+            }
         }
         return supplierDto;
     }
