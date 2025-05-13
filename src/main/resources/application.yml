@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: inventory-service
+  config:
+    import: "configserver:http://localhost:8888"  # URL del Config Server
+  cloud:
+    config:
+      fail-fast: true
+      retry:
+        initial-interval: 3000
+        max-attempts: 5
+
+# Opcional: Perfil activo (si usas perfiles como 'dev', 'prod')
+# spring.profiles.active: dev
