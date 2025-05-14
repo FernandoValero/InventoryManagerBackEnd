@@ -71,12 +71,6 @@ public class SaleServiceImpl implements SaleService {
         return saleMapper.toDto(sale);
     }
 
-    //Verificar uso
-    @Override
-    public SaleDto updateSale(SaleDto saleDto, Integer id) {
-        return null;
-    }
-
     @Override
     public void deleteSale(Integer id) throws ValidationException {
         Sale sale = saleRepository.findById(id).orElse(null);
@@ -88,6 +82,15 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
+    public List<SaleDto> getAllSales() {
+        return saleRepository.findByDeletedFalse()
+                .stream()
+                .map(saleMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    //Filters
+    @Override
     public SaleDto getSaleById(Integer id) throws NotFoundException {
         Sale sale = saleRepository.findById(id).orElse(null);
         if (sale == null || sale.getDeleted()) {
@@ -96,12 +99,68 @@ public class SaleServiceImpl implements SaleService {
         return saleMapper.toDto(sale);
     }
 
-    @Override
-    public List<SaleDto> getAllSales() {
-        return saleRepository.findByDeletedFalse()
+    /*@Override
+    public List<SaleDto> findBySaleDateBetween(String startDate, String endDate) {
+        LocalDateTime start = LocalDateTime.parse(startDate);
+        LocalDateTime end = LocalDateTime.parse(endDate);
+
+        if (start.isAfter(end)) {
+            throw new IllegalArgumentException("La fecha de inicio no puede ser posterior a la fecha de fin");
+        }
+
+        return saleRepository.findBySaleDateBetweenAndDeletedFalse(start, end)
                 .stream()
                 .map(saleMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
+    }*/
+
+
+    @Override
+    public List<SaleDto> findByClientId(Integer clientId) {
+        return saleRepository.findByClientId(clientId)
+                .stream()
+                .map(saleMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    public List<SaleDto> findByUserId(Integer userId) {
+        return saleRepository.findByUserId(userId)
+                .stream()
+                .map(saleMapper::toDto)
+                .toList();
+    }
+
+@Override
+public List<SaleDto> findBySaleDateMonth(int monthNumber) {
+    if (monthNumber < 1 || monthNumber > 12) {
+        throw new IllegalArgumentException("Invalid month number. The month number must be between 1 and 12");
+    }
+    return saleRepository.findBySaleDateMonth(monthNumber)
+            .stream()
+            .map(saleMapper::toDto)
+            .toList();
+}
+
+@Override
+public List<SaleDto> findBySaleDateYear(int year) {
+    if (year < 1900 || year > 9999) {
+        throw new IllegalArgumentException("El año debe estar en un rango válido (1900-9999)");
+    }
+    return saleRepository.findBySaleDateYear(year)
+            .stream()
+            .map(saleMapper::toDto)
+            .toList();
+}
+
+    @Override
+    public List<SaleDto> findByProductId(Integer productId) {
+        return saleRepository.findAll()
+                .stream()
+                .filter(sale -> sale.getSaleDetails().stream()
+                        .anyMatch(item -> item.getId().equals(productId)))
+                .map(saleMapper::toDto)
+                .toList();
     }
 
     private Double calculateTotal(List<SaleDetail>  saleDetails){

@@ -74,4 +74,90 @@ public class SaleController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }
+
+    /*
+    @GetMapping("/between")
+    public ResponseEntity<Map<String, Object>> getSalesBetweenDates(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {
+        Map<String, Object> response = new HashMap<>();
+        try{
+            List<SaleDto> sales = saleService.findBySaleDateBetween(startDate,endDate);
+            response.put(SALES, sales);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch(Exception e){
+            response.put(MESSAGE, INTERNAL_ERROR);
+            response.put(ERROR, e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }*/
+
+    @GetMapping("/client/{clientId}")
+    public ResponseEntity<Map<String, Object>> getSalesByClientId(@PathVariable Integer clientId) {
+        Map<String, Object> response = new HashMap<>();
+        try{
+            List<SaleDto> sales = saleService.findByClientId(clientId);
+            response.put(SALES, sales);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch(Exception e){
+            response.put(MESSAGE, INTERNAL_ERROR);
+            response.put(ERROR, e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<Map<String, Object>> getSalesByUserId(@PathVariable Integer userId) {
+        Map<String, Object> response = new HashMap<>();
+        try{
+            List<SaleDto> sales = saleService.findByUserId(userId);
+            response.put(SALES, sales);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch(Exception e){
+            response.put(MESSAGE, INTERNAL_ERROR);
+            response.put(ERROR, e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
+
+    @GetMapping("/month")
+    public ResponseEntity<Map<String, Object>> getSalesByMonth(@RequestParam int month){
+        Map<String, Object> response = new HashMap<>();
+        try{
+            List<SaleDto> sales = saleService.findBySaleDateMonth(month);
+            response.put(SALES, sales);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch(Exception e) {
+            response.put(MESSAGE, INTERNAL_ERROR);
+            response.put(ERROR, e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
+
+    @GetMapping("/year")
+    public ResponseEntity<Map<String, Object>> getSalesByYear(@RequestParam int year) {
+        Map<String, Object> response = new HashMap<>();
+        try{
+            List<SaleDto> sales = saleService.findBySaleDateYear(year);
+            response.put(SALES, sales);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch(Exception e) {
+            response.put(MESSAGE, INTERNAL_ERROR);
+            response.put(ERROR, e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
+
+
+    @GetMapping("/product/{productId}")
+    public ResponseEntity<Map<String, Object>> getSalesByProduct(@PathVariable Integer productId) {
+        Map<String, Object> response = new HashMap<>();
+        try{
+            List<SaleDto> sales = saleService.findByProductId(productId);
+            response.put(SALES, sales);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch(Exception e) {
+            response.put(MESSAGE, INTERNAL_ERROR);
+            response.put(ERROR, e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+    }
 }
