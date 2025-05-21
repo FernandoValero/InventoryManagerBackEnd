@@ -2,6 +2,7 @@ package ar.com.manager.inventory.service.impl;
 
 import ar.com.manager.inventory.dto.SaleDetailDto;
 import ar.com.manager.inventory.dto.SaleDto;
+import ar.com.manager.inventory.entity.Product;
 import ar.com.manager.inventory.entity.Sale;
 import ar.com.manager.inventory.entity.SaleDetail;
 import ar.com.manager.inventory.exception.NotFoundException;
@@ -12,6 +13,7 @@ import ar.com.manager.inventory.repository.ProductRepository;
 import ar.com.manager.inventory.repository.SaleDetailRepository;
 import ar.com.manager.inventory.repository.SaleRepository;
 import ar.com.manager.inventory.service.SaleService;
+import ar.com.manager.inventory.util.Util;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -43,17 +45,19 @@ public class SaleServiceImpl implements SaleService {
         if(saleDto.getUserId() == null){
             throw new ValidationException("The user id is required.");
         }
-        System.out.println("Muestra el Println");
         saleDto.getSaleDetail().forEach(saleDetailDto -> {
             if (saleDetailDto.getAmount() <= 0) {
                 throw new ValidationException("The amount in sale details must be greater than 0");
             }
-            if (saleDetailDto.getProduct().getId() == null || !productRepository.existsById(saleDetailDto.getProduct().getId())) {
-                throw new ValidationException("The product in sale details does not exist");
+            Product product = productRepository.findById(saleDetailDto.getProduct().getId()).orElseThrow(() -> {
+                String errorMessage = "The product with id " + saleDetailDto.getProduct().getId() + " does not exist.";
+                return new NotFoundException(errorMessage);
+            });
+            if (product.getStock() < saleDetailDto.getAmount()) {
+                throw new ValidationException("The product in sale details does not have enough stock");
             }
         });
         Sale sale = saleMapper.toEntity(saleDto);
-        System.out.println("Se convirtio la entidad de DTO a Entity");
         sale.setDeleted(false);
 
         List<SaleDetail> saleDetails = new ArrayList<>();
@@ -68,6 +72,7 @@ public class SaleServiceImpl implements SaleService {
         sale.setSaleDate(now);
 
         sale = saleRepository.save(sale);
+        saleDetails.forEach(this::updateProductStock);
         return saleMapper.toDto(sale);
     }
 
@@ -99,10 +104,10 @@ public class SaleServiceImpl implements SaleService {
         return saleMapper.toDto(sale);
     }
 
-    /*@Override
+    @Override
     public List<SaleDto> findBySaleDateBetween(String startDate, String endDate) {
-        LocalDateTime start = LocalDateTime.parse(startDate);
-        LocalDateTime end = LocalDateTime.parse(endDate);
+        LocalDateTime start = Util.stringToLocalDateTime(startDate);
+        LocalDateTime end = Util.stringToLocalDateTime(endDate);
 
         if (start.isAfter(end)) {
             throw new IllegalArgumentException("La fecha de inicio no puede ser posterior a la fecha de fin");
@@ -112,12 +117,12 @@ public class SaleServiceImpl implements SaleService {
                 .stream()
                 .map(saleMapper::toDto)
                 .toList();
-    }*/
+    }
 
 
     @Override
     public List<SaleDto> findByClientId(Integer clientId) {
-        return saleRepository.findByClientId(clientId)
+        return saleRepository.findByClientIdAndDeletedFalse(clientId)
                 .stream()
                 .map(saleMapper::toDto)
                 .toList();
@@ -125,40 +130,40 @@ public class SaleServiceImpl implements SaleService {
 
     @Override
     public List<SaleDto> findByUserId(Integer userId) {
-        return saleRepository.findByUserId(userId)
+        return saleRepository.findByUserIdAndDeletedFalse(userId)
                 .stream()
                 .map(saleMapper::toDto)
                 .toList();
     }
 
-@Override
-public List<SaleDto> findBySaleDateMonth(int monthNumber) {
-    if (monthNumber < 1 || monthNumber > 12) {
-        throw new IllegalArgumentException("Invalid month number. The month number must be between 1 and 12");
+    @Override
+    public List<SaleDto> findBySaleDateMonth(int monthNumber) {
+        if (monthNumber < 1 || monthNumber > 12) {
+            throw new IllegalArgumentException("Invalid month number. The month number must be between 1 and 12");
+        }
+        return saleRepository.findBySaleDateMonthAndDeletedFalse(monthNumber)
+                .stream()
+                .map(saleMapper::toDto)
+                .toList();
     }
-    return saleRepository.findBySaleDateMonth(monthNumber)
-            .stream()
-            .map(saleMapper::toDto)
-            .toList();
-}
 
-@Override
-public List<SaleDto> findBySaleDateYear(int year) {
-    if (year < 1900 || year > 9999) {
-        throw new IllegalArgumentException("El año debe estar en un rango válido (1900-9999)");
+    @Override
+    public List<SaleDto> findBySaleDateYear(int year) {
+        if (year < 2020 || year > 9999) {
+            throw new IllegalArgumentException("The year must be in a valid range (2020-9999)");
+        }
+        return saleRepository.findBySaleDateYearAndDeletedFalse(year)
+                .stream()
+                .map(saleMapper::toDto)
+                .toList();
     }
-    return saleRepository.findBySaleDateYear(year)
-            .stream()
-            .map(saleMapper::toDto)
-            .toList();
-}
 
     @Override
     public List<SaleDto> findByProductId(Integer productId) {
-        return saleRepository.findAll()
+        return saleRepository.findByDeletedFalse()
                 .stream()
                 .filter(sale -> sale.getSaleDetails().stream()
-                        .anyMatch(item -> item.getId().equals(productId)))
+                        .anyMatch(item -> item.getProduct().getId().equals(productId)))
                 .map(saleMapper::toDto)
                 .toList();
     }
@@ -169,5 +174,12 @@ public List<SaleDto> findBySaleDateYear(int year) {
             total += detail.getAmount() * detail.getProduct().getPrice();
         }
         return total;
+    }
+
+    private void updateProductStock(SaleDetail saleDetail){
+        Product product = saleDetail.getProduct();
+        Integer amount = saleDetail.getAmount();
+        product.setStock(product.getStock() - amount);
+        productRepository.save(product);
     }
 }

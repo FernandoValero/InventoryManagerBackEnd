@@ -20,6 +20,7 @@ public class SaleDetailMapper {
         saleDetailDto.setId(saleDetail.getId());
         saleDetailDto.setAmount(saleDetail.getAmount());
         saleDetailDto.setProduct(productMapper.toDto(saleDetail.getProduct()));
+        saleDetailDto.setDeleted(saleDetail.getDeleted());
         return saleDetailDto;
     }
 

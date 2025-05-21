@@ -13,14 +13,14 @@ import java.util.List;
 public interface SaleRepository extends JpaRepository<Sale, Integer> {
     List<Sale> findByDeletedFalse();
 
-    List<Sale> findByClientId(Integer clientId);
-    List<Sale> findByUserId(Integer userId);
+    List<Sale> findByClientIdAndDeletedFalse(Integer clientId);
+    List<Sale> findByUserIdAndDeletedFalse(Integer userId);
 
-    @Query("SELECT s FROM Sale s WHERE MONTH(s.saleDate) = :month")
-    List<Sale> findBySaleDateMonth(@Param("month") int month);
+    @Query("SELECT s FROM Sale s WHERE MONTH(s.saleDate) = :month AND s.deleted = false")
+    List<Sale> findBySaleDateMonthAndDeletedFalse(@Param("month") int month);
 
-    @Query("SELECT s FROM Sale s WHERE YEAR(s.saleDate) = :year")
-    List<Sale> findBySaleDateYear(@Param("year") int year);
+    @Query("SELECT s FROM Sale s WHERE YEAR(s.saleDate) = :year AND s.deleted = false")
+    List<Sale> findBySaleDateYearAndDeletedFalse(@Param("year") int year);
 
     List<Sale> findBySaleDateBetweenAndDeletedFalse(LocalDateTime startDate, LocalDateTime endDate);
 

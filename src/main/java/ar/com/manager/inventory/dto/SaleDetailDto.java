@@ -6,6 +6,7 @@ public class SaleDetailDto {
 
     private int amount;
     private ProductDto product;
+    private boolean deleted;
 
     public SaleDetailDto() {
     }
@@ -38,5 +39,13 @@ public class SaleDetailDto {
 
     public void setProduct(ProductDto product) {
         this.product = product;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

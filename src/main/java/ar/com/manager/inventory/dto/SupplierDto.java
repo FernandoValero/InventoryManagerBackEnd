@@ -12,6 +12,7 @@ public class SupplierDto {
     private String email;
     private String company;
     private List<ProductDto> products;
+    private boolean deleted;
 
     public SupplierDto() {
     }
@@ -84,5 +85,13 @@ public class SupplierDto {
 
     public void addProduct(ProductDto product) {
         this.products.add(product);
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

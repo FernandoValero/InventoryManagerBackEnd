@@ -11,7 +11,7 @@ public interface SaleService {
     List<SaleDto> getAllSales();
 
     //Filters
-    //List<SaleDto> findBySaleDateBetween(String startDate, String endDate);
+    List<SaleDto> findBySaleDateBetween(String startDate, String endDate);
     List<SaleDto> findByClientId(Integer clientId);
     List<SaleDto> findByUserId(Integer userId);
     List<SaleDto> findBySaleDateMonth(int monthNumber);

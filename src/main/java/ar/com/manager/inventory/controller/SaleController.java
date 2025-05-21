@@ -15,7 +15,7 @@ import java.util.Map;
 import static ar.com.manager.inventory.controller.util.MessageConstants.*;
 
 @RestController
-@RequestMapping("api/v1/sales")
+@RequestMapping("/sales")
 public class SaleController {
 
     SaleService saleService;
@@ -75,7 +75,7 @@ public class SaleController {
         }
     }
 
-    /*
+
     @GetMapping("/between")
     public ResponseEntity<Map<String, Object>> getSalesBetweenDates(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {
         Map<String, Object> response = new HashMap<>();
@@ -88,7 +88,7 @@ public class SaleController {
             response.put(ERROR, e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
-    }*/
+    }
 
     @GetMapping("/client/{clientId}")
     public ResponseEntity<Map<String, Object>> getSalesByClientId(@PathVariable Integer clientId) {

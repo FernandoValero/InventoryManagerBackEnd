@@ -15,7 +15,7 @@ import java.util.Map;
 import static ar.com.manager.inventory.controller.util.MessageConstants.*;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/users")
 public class UserController {
 
     UserService userService;

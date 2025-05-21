@@ -11,6 +11,7 @@ public class SaleDto {
     private Integer userId;
     private Integer clientId;
     private List<SaleDetailDto> saleDetail;
+    private boolean deleted;
 
     public SaleDto() {
     }
@@ -74,5 +75,13 @@ public class SaleDto {
 
     public void addSaleDetail(SaleDetailDto saleDetail) {
         this.saleDetail.add(saleDetail);
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

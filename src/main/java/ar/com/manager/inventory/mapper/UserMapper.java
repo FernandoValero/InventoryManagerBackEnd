@@ -33,6 +33,7 @@ public class UserMapper {
                 userDto.addSale(saleMapper.toDto(sale));
             }
         }
+        userDto.setDeleted(user.getDeleted());
         return userDto;
     }
     public User toEntity(UserDto userDto) {

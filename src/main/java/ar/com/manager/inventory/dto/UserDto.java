@@ -15,6 +15,7 @@ public class UserDto {
     private String type;
     private boolean enabled;
     private List<SaleDto> sales;
+    private boolean deleted;
 
     public UserDto() {
     }
@@ -114,5 +115,13 @@ public class UserDto {
 
     public void addSale(SaleDto sale) {
         this.sales.add(sale);
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

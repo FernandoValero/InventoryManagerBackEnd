@@ -8,7 +8,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-public class Util {
+public class  Util {
 
     /**
      * Method to convert a string in dd/MM/yyyy HH:mm:ss format to LocalDateTime

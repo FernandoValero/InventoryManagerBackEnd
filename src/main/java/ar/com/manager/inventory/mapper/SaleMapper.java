@@ -39,6 +39,7 @@ public class SaleMapper {
         for(SaleDetail saleDetail : sale.getSaleDetails()) {
             saleDto.addSaleDetail(saleDetailMapper.toDto(saleDetail));
         }
+        saleDto.setDeleted(sale.getDeleted());
         return saleDto;
 }
 

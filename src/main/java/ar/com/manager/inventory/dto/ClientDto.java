@@ -13,6 +13,7 @@ public class ClientDto {
     private String lastName;
     private String dni;
     private List<SaleDto> sales;
+    private boolean deleted;
 
     public ClientDto() {
     }
@@ -63,6 +64,14 @@ public class ClientDto {
 
     public void setSales(List<SaleDto> sales) {
         this.sales = sales;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public void addSale(SaleDto sale) {

@@ -32,6 +32,7 @@ public class ProductMapper {
         if(product.getSupplier() != null){
             productDto.setSupplierId(product.getSupplier().getId());
         }
+        productDto.setDeleted(product.getDeleted());
         return productDto;
     }
     public Product toEntity(ProductDto productDto) throws NotFoundException {

@@ -16,7 +16,7 @@ import java.util.Map;
 import static ar.com.manager.inventory.controller.util.MessageConstants.*;
 
 @RestController
-@RequestMapping("/api/v1/products")
+@RequestMapping("/products")
 public class ProductController {
 
     ProductService productService;

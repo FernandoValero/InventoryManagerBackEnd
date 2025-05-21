@@ -26,6 +26,7 @@ public class ClientMapper {
                 clientDto.addSale(saleMapper.toDto(sale));
             }
         }
+        clientDto.setDeleted(client.getDeleted());
         return clientDto;
     }
 

@@ -26,6 +26,7 @@ public class SupplierMapper {
                 supplierDto.addProduct(productMapper.toDto(product));
             }
         }
+        supplierDto.setDeleted(supplier.getDeleted());
         return supplierDto;
     }
     public Supplier toEntity(SupplierDto supplierDto) {

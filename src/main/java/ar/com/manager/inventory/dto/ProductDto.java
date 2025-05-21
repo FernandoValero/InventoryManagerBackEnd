@@ -14,6 +14,7 @@ public class ProductDto {
     private String image;
     private Integer userId;
     private Integer supplierId;
+    private boolean deleted;
 
     public ProductDto() {
     }
@@ -118,5 +119,13 @@ public class ProductDto {
 
     public void setSupplierId(Integer supplierId) {
         this.supplierId = supplierId;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }
