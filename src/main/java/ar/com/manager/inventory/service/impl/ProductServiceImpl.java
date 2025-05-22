@@ -103,11 +103,6 @@ public class ProductServiceImpl implements ProductService {
         finalProduct.setDescription(modifiedProduct.getDescription());
         finalProduct.setCategory(modifiedProduct.getCategory());
         finalProduct.setImage(modifiedProduct.getImage());
-        finalProduct.setUser(
-                userRepository.findById(modifiedProduct.getUserId())
-                        .orElseThrow(() -> new NotFoundException("User not found with ID: " + modifiedProduct.getUserId()))
-        );
-
         finalProduct.setSupplier(
                 supplierRepository.findById(modifiedProduct.getSupplierId())
                         .orElseThrow(() -> new NotFoundException("Supplier not found with ID: " + modifiedProduct.getSupplierId()))

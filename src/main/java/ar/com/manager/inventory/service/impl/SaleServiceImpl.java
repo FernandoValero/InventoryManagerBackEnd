@@ -110,7 +110,7 @@ public class SaleServiceImpl implements SaleService {
         LocalDateTime end = Util.stringToLocalDateTime(endDate);
 
         if (start.isAfter(end)) {
-            throw new IllegalArgumentException("La fecha de inicio no puede ser posterior a la fecha de fin");
+            throw new IllegalArgumentException("The start date cannot be later than the end date.");
         }
 
         return saleRepository.findBySaleDateBetweenAndDeletedFalse(start, end)
