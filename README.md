@@ -1,4 +1,4 @@
-# Inventory Service
+# 🛍️ Inventory Service
 
 Este microservicio gestiona el inventario de productos, las operaciones de ventas, la relación con proveedores, usuarios y clientes.
 
@@ -10,6 +10,7 @@ Este microservicio gestiona el inventario de productos, las operaciones de venta
 - Spring Cloud (Eureka Client, Config Client)
 - Feign
 - MySQL
+- Swagger/OpenAPI
 
 ## Funcionalidades
 - Gestión CRUD de productos, proveedores, usuarios y clientes.
