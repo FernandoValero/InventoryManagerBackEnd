@@ -49,10 +49,10 @@ public class SaleServiceImpl implements SaleService {
             if (saleDetailDto.getAmount() <= 0) {
                 throw new ValidationException("The amount in sale details must be greater than 0");
             }
-            Product product = productRepository.findById(saleDetailDto.getProduct().getId()).orElseThrow(() -> {
-                String errorMessage = "The product with id " + saleDetailDto.getProduct().getId() + " does not exist.";
-                return new NotFoundException(errorMessage);
-            });
+            Product product = productRepository.findByIdAndDeletedFalse(saleDetailDto.getProduct().getId());
+            if(product == null){
+                throw new NotFoundException("The product with id " + saleDetailDto.getProduct().getId() + " does not exist.");
+            }
             if (product.getStock() < saleDetailDto.getAmount()) {
                 throw new ValidationException("The product in sale details does not have enough stock");
             }
@@ -110,7 +110,7 @@ public class SaleServiceImpl implements SaleService {
         LocalDateTime end = Util.stringToLocalDateTime(endDate);
 
         if (start.isAfter(end)) {
-            throw new IllegalArgumentException("La fecha de inicio no puede ser posterior a la fecha de fin");
+            throw new IllegalArgumentException("The start date cannot be later than the end date.");
         }
 
         return saleRepository.findBySaleDateBetweenAndDeletedFalse(start, end)

@@ -6,8 +6,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
-@EnableDiscoveryClient // Registrarse en Eureka
-@EnableFeignClients // Si usas Feign para llamar a otros servicios
+@EnableDiscoveryClient
+@EnableFeignClients
 public class BackEndInventoryManagerApplication {
 
 	public static void main(String[] args) {

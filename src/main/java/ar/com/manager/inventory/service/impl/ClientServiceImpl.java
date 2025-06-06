@@ -6,7 +6,6 @@ import ar.com.manager.inventory.entity.Sale;
 import ar.com.manager.inventory.exception.NotFoundException;
 import ar.com.manager.inventory.exception.ValidationException;
 import ar.com.manager.inventory.mapper.ClientMapper;
-import ar.com.manager.inventory.mapper.ProductMapper;
 import ar.com.manager.inventory.repository.ClientRepository;
 import ar.com.manager.inventory.service.ClientService;
 import lombok.extern.slf4j.Slf4j;

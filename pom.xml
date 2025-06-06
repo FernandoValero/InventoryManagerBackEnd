@@ -73,12 +73,11 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
-		<!-- Feign (para llamadas HTTP a otros servicios) -->
+		<!-- Feign -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
-		<!-- Para soportar rutas dinámicas desde el Gateway -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -96,7 +95,7 @@
 			<version>1.7.0</version>
 		</dependency>
 	</dependencies>
-	<!-- Spring Cloud Version Management (para Boot 3.x usa 2023.0.0) -->
+	<!-- Spring Cloud Version Management -->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>

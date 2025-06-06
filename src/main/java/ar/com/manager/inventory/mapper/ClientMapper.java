@@ -1,11 +1,15 @@
 package ar.com.manager.inventory.mapper;
 
 import ar.com.manager.inventory.dto.ClientDto;
+import ar.com.manager.inventory.dto.SaleDto;
 import ar.com.manager.inventory.entity.Client;
 import ar.com.manager.inventory.entity.Sale;
 import ar.com.manager.inventory.entity.User;
 import ar.com.manager.inventory.repository.ClientRepository;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class ClientMapper {
@@ -17,10 +21,12 @@ public class ClientMapper {
 
     public ClientDto toDto(Client client) {
         ClientDto clientDto = new ClientDto();
+        List<SaleDto> sales = new ArrayList<>();
         clientDto.setId(client.getId());
         clientDto.setFirstName(client.getFirstName());
         clientDto.setLastName(client.getLastName());
         clientDto.setDni( client.getDni());
+        clientDto.setSales(sales);
         if(client.getSales() != null ) {
             for (Sale sale : client.getSales()) {
                 clientDto.addSale(saleMapper.toDto(sale));

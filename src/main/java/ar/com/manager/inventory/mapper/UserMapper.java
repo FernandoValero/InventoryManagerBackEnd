@@ -20,7 +20,7 @@ public class UserMapper {
         UserDto userDto = new UserDto();
         List<SaleDto> sales = new ArrayList<>();
         userDto.setId(user.getId());
-         userDto.setFirstName(user.getFirstName());
+        userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
         userDto.setUserName(user.getUserName());
         userDto.setPhoneNumber(user.getPhoneNumber());
